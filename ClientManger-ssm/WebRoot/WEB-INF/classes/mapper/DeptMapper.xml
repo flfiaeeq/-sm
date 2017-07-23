@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.DeptMapper">
+<resultMap type="entity.Dept" id="deptMap">
+ <result property="deptId" column="dept_id" javaType="java.lang.String"/>
+ <result property="deptShortName" column="dept_short_name" javaType="java.lang.String"/>
+  <result property="deptAllName" column="dept_all_name" javaType="java.lang.String"/>
+ <result property="deptFather" column="dept_father" javaType="java.lang.String"/>
+ <result property="deptIntro" column="dept_intro" javaType="java.lang.String"/>
+ <result property="deptRemark" column="dept_remark" javaType="java.lang.String"/>
+ <result property="deptAdmin" column="dept_admin" javaType="java.lang.String"/>
+ <result property="deptController" column="dept_Controller" javaType="java.lang.String"/>
+ <result property="deptUpdateTime" column="dept_update_time" javaType="java.sql.Date"/>
+ <result property="deptDel" column="dept_del" javaType="java.math.BigDecimal"/>
+ 
+ <collection property="emps" column="emp_dept" ofType="entity.Emp">
+			
+			<result property="empId" column="emp_id" javaType="java.lang.String"/>
+            <result property="empName" column="emp_name" javaType="java.lang.String"/>
+            <result property="empSex" column="emp_sex" javaType="java.lang.String"/>
+            <result property="empPhone" column="emp_phone" javaType="java.lang.String"/>
+             <result property="empState" column="emp_state" javaType="java.lang.Long"/>
+            <result property="empLoginName" column="emp_login_name" javaType="java.lang.String"/>
+             <result property="empPassword" column="emp_password" javaType="java.lang.String"/>
+              <result property="empDept" column="emp_dept" javaType="java.lang.String"/>
+              <result property="empRole" column="emp_role" javaType="java.lang.String"/>
+              <result property="empUpdateTime" column="emp_update_time" javaType="java.sql.Date"/>
+              <result property="empController" column="emp_controller" javaType="java.lang.String"/>
+             <result property="empDel" column="emp_del" javaType="java.math.BigDecimal"/>
+                <result property="empRemark" column="emp_remark" javaType="java.lang.String"/>
+           <result property="empUpdatePass" column="emp_update_pass" javaType="java.lang.Byte"/>
+		</collection>
+ 
+ 
+ 
+</resultMap>
+<select id="findAllDeptEmpt" resultMap="deptMap" parameterType="java.lang.String">
+   select * from "dept","emp" where "dept_short_name"=#{deptShortName} and "dept_short_name"="emp_dept"
+</select>
+<select id="findAllDept" resultMap="deptMap">
+   select * from "dept"
+</select>
+
+<!--lei-->
+<select id="findDept" resultMap="deptMap" parameterType="String">
+   select * from "dept" where "dept_id"=#{deptId}
+</select>
+
+<select id="findDeptFather" resultMap="deptMap" >
+   select DISTINCT ("dept_father") from "dept"
+</select>
+
+<select id="findDeptShortName" resultMap="deptMap" >
+   select DISTINCT ("dept_short_name") from "dept"
+</select>
+
+	
+ <insert id="save" parameterType="entity.Dept" >
+ 	INSERT INTO   "dept"   VALUES(#{deptId},#{deptShortName},#{deptAllName},#{deptFather},#{deptIntro},#{deptRemark},#{deptAdmin},#{deptController},#{deptUpdateTime},#{deptDel})
+ </insert>
+	
+	<delete id="delete" parameterType="String">
+	DELETE FROM "dept" WHERE "dept_id"=#{deptId}
+	</delete>
+	
+	<update id="update" parameterType="entity.Dept">
+		update "dept" set "dept_short_name"=#{deptShortName},"dept_all_name"=#{deptAllName},"dept_father"=#{deptFather},"dept_intro"=#{deptIntro},"dept_remark"=#{deptRemark},"dept_admin"=#{deptAdmin},"dept_controller"=#{deptController},"dept_update_time"=#{deptUpdateTime} where "dept_del"=#{deptDel}
+	</update>
+</mapper>
+
+

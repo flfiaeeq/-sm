@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="mapper.ClientGoodsIdMapper">
+	<resultMap type="entity.ClientGoodsId" id="clientGoodMap">
+		<result property="clientName" column="client_name" javaType="java.lang.String" />
+		<result property="goodsId" column="goods_id" javaType="java.lang.String" />
+		<result property="num" column="num" javaType="java.math.BigDecimal" />
+		<association property="order" javaType="entity.Order">
+        <result property="orderNumber" column="order_number" javaType="java.lang.String"/>
+        <result property="orderGoods" column="order_goods" javaType="java.lang.String"/>
+        <result property="orderClientName" column="order_client_name" javaType="java.lang.String"/>
+        <result property="orderClientTel" column="order_client_tel" javaType="java.lang.String"/>
+        <result property="orderClientAddress" column="order_client_address" javaType="java.lang.String"/>
+        <result property="orderMoney" column="order_money" javaType="java.lang.Double"/>
+        <result property="orderTime" column="order_time" javaType="java.sql.Date"/>
+         <result property="orderState" column="order_state" javaType="java.lang.String"/>
+    </association>
+	 </resultMap>
+	 
+<select id="findAllOrder" resultMap="clientGoodMap" parameterType="String">
+		select a.*,b.* from "order" a ,"client_goods" b where a."order_number"=b."order_number" and  b."client_name"='郝帅'
+
+</select> 
+	 
+	 
+ </mapper>

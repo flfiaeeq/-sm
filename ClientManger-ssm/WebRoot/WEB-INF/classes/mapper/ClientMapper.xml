@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="mapper.ClientMapper">
+	<resultMap type="entity.Client" id="clientMap">
+		<result property="clientId" column="client_id" javaType="java.lang.String" />
+		<result property="clientName" column="client_name" javaType="java.lang.String" />
+		<result property="clientSex" column="client_sex" javaType="java.lang.String" />
+		<result property="clientBirth" column="client_birth" javaType="java.sql.Date" />
+		<result property="clientType" column="client_type" javaType="java.lang.String" />
+		<result property="clientState" column="client_state" javaType="java.math.BigDecimal" />
+		<result property="clientTel" column="client_tel" javaType="java.lang.String" />
+		<result property="clientOffice" column="client_office" javaType="java.lang.String" />
+		<result property="clientEmail" column="client_email" javaType="java.lang.String" />
+		<result property="clientHome" column="client_home" javaType="java.lang.String" />
+		<result property="clientAddress" column="client_address" javaType="java.lang.String" />
+		<result property="clientRemark" column="client_remark" javaType="java.lang.String" />
+		<result property="clientCreater" column="client_creater" javaType="java.lang.String" />
+		<result property="clientCreateTime" column="client_create_time" javaType="java.sql.Date" />
+		<result property="clientController" column="client_controller" javaType="java.lang.String" />
+		 
+		<result property="clientUpdateTime" column="client_update_time" javaType="java.sql.Date" />
+		<result property="clientServer" column="client_server" javaType="java.lang.String" />
+		<result property="clientBuyNum" column="client_buy_num" javaType="java.math.BigDecimal" />
+		<result property="clientBuyMoney" column="client_buy_money" javaType="java.lang.Double" />
+		<result property="clientTrust" column="client_trust" javaType="java.lang.String" />
+		<result property="clientValue" column="client_value" javaType="java.lang.Long" />
+		<result property="clientSurvey" column="client_survey" javaType="java.sql.Date" />
+		<result property="clientZlmyd" column="client_zlmyd" javaType="java.lang.String" />
+		<result property="clientFwmyd" column="client_fwmyd" javaType="java.lang.String" />
+		<result property="clientXjmyd" column="client_xjmyd" javaType="java.lang.String" />
+		<result property="clientZtmyd" column="client_ztmyd" javaType="java.lang.String" />
+		<result property="clientBackInfo" column="client_back_info" javaType="java.lang.String" />
+		<result property="clientDel" column="client_del" javaType="java.lang.Long" />
+		
+<!--	<association property="order" javaType="entity.Order">-->
+<!--        <result property="orderNumber" column="order_number" javaType="java.lang.String"/>-->
+<!--        <result property="orderGoods" column="order_goods" javaType="java.lang.String"/>-->
+<!--        <result property="orderClientName" column="order_client_name" javaType="java.lang.String"/>-->
+<!--        <result property="orderClientTel" column="order_client_tel" javaType="java.lang.String"/>-->
+<!--        <result property="orderClientAddress" column="order_client_address" javaType="java.lang.String"/>-->
+<!--        <result property="orderMoney" column="order_money" javaType="java.math.BigDecimal"/>-->
+<!--        <result property="orderTime" column="order_time" javaType="java.sql.Date"/>-->
+<!--        <result property="orderState" column="order_state" javaType="java.lang.String"/>-->
+<!--    </association>-->
+ 
+	</resultMap>
+	
+	
+<insert id="addClient"  parameterType="entity.Client">
+	insert into "client" ("client_id","client_name","client_sex","client_birth","client_type","client_state","client_tel","client_office","client_email","client_home","client_address","client_remark")
+	 values(#{clientId},#{clientName},#{clientSex},#{clientBirth},#{clientType},#{clientState},#{clientTel},#{clientOffice},#{clientEmail},#{clientHome},#{clientAddress},#{clientRemark})
+</insert>
+<!--<insert id="addClientSatisfaction"  parameterType="entity.Client">-->
+<!--	insert into "client" ("client_zlmyd","client_fwmyd","client_xjmyd","client_ztmyd","client_back_info")-->
+<!--	 values(#{clientZlmyd},#{clientFwmyd},#{clientXjmyd},#{clientZtmyd},#{clientBackInfo}) where "client_id"=#{clientId}-->
+<!--</insert>-->
+<update id="addClientSatisfaction" parameterType="entity.Client">
+		update "client" set "client_zlmyd"=#{clientZlmyd},"client_fwmyd"=#{clientFwmyd},
+		"client_xjmyd"=#{clientXjmyd},"client_ztmyd"=#{clientZtmyd},"client_back_info"=#{clientBackInfo} where "client_id"=#{clientId}
+</update>	
+<!--<insert id="addClient" parameterType="entity.Client">-->
+<!--	insert into tb_user values(#{clientId},#{clientName},#{clientSex},#{clientBirth},#{clientType},#{clientState},#{clientTel},#{clientOffice},#{clientEmail},#{clientHome},#{clientAddress},-->
+<!--	#{clientRemark},#{clientCreater},#{clientCreateTime},#{clientCoclntroller},#{clientUpdateTime},#{clientServer},#{clientBuyNum},#{clientBuyMoney},#{clientTrust},#{clientValue},-->
+<!--	#{clientSurvey},#{clientZlmyd},#{clientFwmyd},#{clientXjmyd},#{clientZtmyd},#{clientBackInfo},#{clientDel});-->
+<!--</insert>-->
+
+<select id="findAll" resultMap="clientMap">
+     select a1.* from (select "client".*,rownum rn from "client")a1 where
+    rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+ 
+<select id="findClientById" resultMap="clientMap" parameterType="int">
+	select * from "client" where "client_id"=#{clientId}
+</select>
+
+<select id="findCount" resultType="java.lang.Integer">
+	select count(*) from "client"
+</select>
+ 
+<update id="updateClientAssgin" parameterType="entity.Client">
+		update "client" set "client_server"=#{clientServer} where "client_id"=#{clientId}
+</update>
+		
+<update id="updateClient" parameterType="entity.Client">
+				update "client" set "client_id"=#{clientId},"client_name"=#{clientName},"client_sex"=#{clientSex},
+				"client_birth"=#{clientBirth},"client_type"=#{clientType},"client_state"=#{clientState},
+				"client_tel"=#{clientTel},"client_office"=#{clientOffice},"client_email"=#{clientEmail},"client_home"=#{clientHome},"client_address"=#{clientAddress},
+		 		"client_remark"=#{clientRemark} where "client_id"=#{clientId}
+</update>
+<select id="findClientType" resultMap="clientMap">
+     select distinct "client_type" from "client"
+</select>
+
+<select id="findClientSatisfaction" resultMap="clientMap">
+     select * from "client" where "client_id"=#{clientId}
+</select>
+<delete id="deleteClientSatisfaction" parameterType="String">
+	delete from "client" where "client_id"=#{clientId}
+</delete>
+
+<!-- <update id="updateClientAssgin" parameterType="entity.Client">-->
+<!--		update "client" set "client_id"=#{clientId},"client_name"=#{clientName},"client_sex"=#{clientSex},"client_create_time"=#{clientCreateTime},-->
+<!--		"client_controller"=#{clientController},"client_update_time"=#{clientUpdateTime}, "client_server"=#{clientServer} where "client_id"=#{clientId}-->
+<!--		-->
+<!--</update>-->
+ 
+</mapper>	

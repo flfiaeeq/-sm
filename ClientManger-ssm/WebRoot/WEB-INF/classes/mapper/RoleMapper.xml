@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.RoleMapper">
+<resultMap type="entity.Role" id="RoleMap">
+ <result property="roleId" column="role_id" javaType="java.lang.String"/>
+ <result property="roleName" column="role_name" javaType="java.lang.String"/>
+ <result property="roleState" column="role_state" javaType="java.math.BigDecimal"/>
+ <result property="roleDept" column="role_dept" javaType="java.lang.String"/>
+ <result property="roleRemark" column="role_remark" javaType="java.lang.String"/>
+ <result property="roleController" column="role_controller" javaType="java.lang.String"/>
+ <result property="roleUpdateTime" column="role_update_time" javaType="java.sql.Date"/>
+ <result property="roleDel" column="role_del" javaType="java.math.BigDecimal"/>
+ 	
+ 	
+<!-- 	private List<Menu> menu-->
+ 	<collection property="menu" ofType="entity.Menu">  
+ 	<result property="menuId" column="menu_id" javaType="java.lang.String"/>
+ 	<result property="menuName" column="menu_name" javaType="java.lang.String"/>
+ 	<result property="menuFather" column="menu_father" javaType="java.lang.String"/>
+ 	<result property="menuState" column="menu_state" javaType="java.math.BigDecimal"/>
+ 	<result property="menuUrl" column="menu_url" javaType="java.lang.String"/>
+ 	<result property="menuRemark" column="menu_remark" javaType="java.lang.String"/>
+ 	<result property="menuDel" column="menu_del" javaType="java.math.BigDecimal"/>
+ 	<result property="menuController" column="menu_controller" javaType="java.lang.String"/>
+ 	<result property="menuUpdateTime" column="menu_update_time" javaType="java.sql.Date"/>
+<!-- 		list属性没有配-->
+           
+       </collection>  
+</resultMap>
+
+
+
+
+<select id="findAllRole" resultMap="RoleMap">
+   select * from "role"
+</select>
+<select id="findRoleDept" resultMap="RoleMap">
+   select DISTINCT ("role_dept") from "role"
+</select>
+<select id="findRoleName" resultMap="RoleMap">
+   select DISTINCT ("role_name") from "role"
+</select>
+
+<select id="findById" resultMap="RoleMap" parameterType="String">
+   select * from "role" where "role_id"=#{roleId}
+</select>	
+
+
+<!--	emp实体类能不能传,不能!!!!!-->
+<select id="findRoleId" resultMap="RoleMap" parameterType="entity.Role">
+	SELECT * FROM "role" r WHERE  r."role_name"=#{roleName}
+</select>
+
+	
+ <insert id="save" parameterType="entity.Role" >
+ 	INSERT INTO   "role"   VALUES(#{roleId},#{roleName},#{roleState},#{roleDept},#{roleRemark},#{roleController},#{roleUpdateTime},#{roleDel})
+ </insert>
+	
+	<delete id="delete" parameterType="String">
+	DELETE FROM "role" WHERE "role_id"=#{roleId}
+	</delete>
+	
+	<update id="update" parameterType="entity.Role">
+		update "role" set "role_name"=#{roleName},"role_state"=#{roleState},"role_dept"=#{roleDept},"role_remark"=#{roleRemark},"role_controller"=#{roleController},"role_update_time"=#{roleUpdateTime},"role_del"=#{roleDel} where "role_id"=#{roleId}
+	</update>
+	
+	<select id="fenye" resultMap="RoleMap" >
+		
+	</select>
+
+</mapper>
+
+

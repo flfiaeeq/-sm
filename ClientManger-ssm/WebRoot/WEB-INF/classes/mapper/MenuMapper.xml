@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.MenuMapper">
+<resultMap type="entity.Menu" id="MenuMap">
+
+	<result property="menuId" column="menu_id" javaType="java.lang.String"/>
+ 	<result property="menuName" column="menu_name" javaType="java.lang.String"/>
+ 	<result property="menuFather" column="menu_father" javaType="java.lang.String"/>
+ 	<result property="menuState" column="menu_state" javaType="java.math.BigDecimal"/>
+ 	<result property="menuUrl" column="menu_url" javaType="java.lang.String"/>
+ 	<result property="menuRemark" column="menu_remark" javaType="java.lang.String"/>
+ 	<result property="menuDel" column="menu_del" javaType="java.math.BigDecimal"/>
+ 	<result property="menuController" column="menu_controller" javaType="java.lang.String"/>
+ 	<result property="menuUpdateTime" column="menu_update_time" javaType="java.sql.Date"/>
+ 	
+ 	
+<!-- 	private List<role> role-->
+ 	<collection property="role" ofType="entity.Role">  
+ 	 <result property="roleId" column="role_id" javaType="java.lang.String"/>
+ <result property="roleName" column="role_name" javaType="java.lang.String"/>
+ <result property="roleState" column="role_state" javaType="java.math.BigDecimal"/>
+ <result property="roleDept" column="role_dept" javaType="java.lang.String"/>
+ <result property="roleRemark" column="role_remark" javaType="java.lang.String"/>
+ <result property="roleController" column="role_controller" javaType="java.lang.String"/>
+ <result property="roleUpdateTime" column="role_update_time" javaType="java.sql.Date"/>
+ <result property="roleDel" column="role_del" javaType="java.math.BigDecimal"/>
+ 	
+<!-- 		list属性没有配-->
+           
+       </collection>  
+</resultMap>
+<select id="findAllMenu" resultMap="MenuMap">
+   select * from "menu"
+</select>
+
+
+<select id="findMenu" resultMap="MenuMap" parameterType="String">
+   select * from "menu" where "menu_id"=#{menuId}
+</select>
+
+<select id="findMenuFather" resultMap="MenuMap" >
+   select DISTINCT ("menu_father") from "menu"
+</select>
+<select id="findZi" resultMap="MenuMap" parameterType="String">
+   select  "menu_id","menu_name","menu_url" FROM "menu" where "menu_father"=#{menuFather}
+</select>
+
+	
+ <insert id="save" parameterType="entity.Menu" >
+ 	INSERT INTO   "menu"   VALUES(#{menuId},#{menuName},#{menuFather},#{menuState},#{menuUrl},#{menuRemark},#{menuDel},#{menuController},#{menuUpdateTime})
+<!-- 	INSERT INTO   "menu" ("menu_id","menu_name") VALUES(#{menuId,jdbcType=VARCHAR},#{menuName},jdbcType=VARCHAR)-->
+ </insert>
+	
+	<delete id="delete" parameterType="String">
+	DELETE FROM "menu" WHERE "menu_id"=#{menuId}
+	</delete>
+	
+	<update id="update" parameterType="entity.Menu">
+		update "menu" set "menu_name"=#{menuName},"menu_father"=#{menuFather},"menu_state"=#{menuState},"menu_url"=#{menuUrl},"menu_remark"=#{menuRemark},"menu_del"=#{menuDel},"menu_controller"=#{menuController},"menu_update_time"=#{menuUpdateTime} where "menu_id"=#{menuId}
+	</update>
+	
+	
+	<select id="count" resultMap="MenuMap" >
+		select COUNT("menu_name") ,"menu_father" FROM "menu" t GROUP BY  "menu_father"
+	</select>
+</mapper>
+
+

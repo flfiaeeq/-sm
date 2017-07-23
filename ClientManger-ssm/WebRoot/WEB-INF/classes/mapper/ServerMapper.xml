@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="mapper.ServerMapper">
+<resultMap type="entity.Server" id="serverMap">
+ <result property="serverName" column="server_name" javaType="java.lang.String"/>
+ <result property="serverType" column="server_type" javaType="java.lang.String"/>
+  <result property="serverClientName" column="server_client_name" javaType="java.lang.String"/>
+  <result property="serverClientTel" column="server_client_tel" javaType="java.lang.String"/>
+  <result property="serverContext" column="server_context" javaType="java.lang.String"/>
+  <result property="serverRemark" column="server_remark" javaType="java.lang.String"/>
+  <result property="serverState" column="server_state" javaType="java.lang.Integer"/>
+  <result property="serverCreateTime" column="server_create_time" javaType="java.sql.Date"/>
+  <result property="serverUpdateTime" column="server_update_time" javaType="java.sql.Date"/>
+  <result property="serverCreater" column="server_creater" javaType="java.lang.String"/>
+  <result property="serverController" column="server_controller" javaType="java.lang.String"/>
+  <result property="serverHandler" column="server_handler" javaType="java.lang.String"/>
+  <result property="serverHandleContext" column="server_handle_context" javaType="java.lang.String"/>
+  <result property="serverBackContext" column="server_back_context" javaType="java.lang.String"/>
+   <result property="serverDel" column="server_del" javaType="java.lang.Integer"/>
+    <result property="serverBackState" column="server_back_state" javaType="java.lang.String"/>
+
+</resultMap>
+<!-- 1.服务创建 -->
+<select id="findAllServer" resultMap="serverMap">
+   select * from "server"
+</select>
+<insert id="saveServer" parameterType="entity.Server" >
+   insert into "server" ("server_name","server_type","server_client_name","server_client_tel","server_context","server_remark","server_creater","server_create_time")values(#{serverName},#{serverType},#{serverClientName},#{serverClientTel},#{serverContext},#{serverRemark},#{serverCreater},#{serverCreateTime})
+</insert>
+<select id="findByNameServer" resultMap="serverMap" parameterType="String">
+	select * from "server" where "server_name" = #{serverName}
+ </select>
+ <delete id="deleteServer" parameterType="String">
+   delete from "server" where "server_name" =#{serverName}
+ </delete>
+ <update id="updateServer" parameterType="entity.Server">
+	update "server" set "server_type"=#{serverType},"server_client_name"=#{serverClientName},"server_client_tel"=#{serverClientTel},"server_context"=#{serverContext},"server_remark"=#{serverRemark},"server_update_time"=#{serverUpdateTime},"server_controller"=#{serverController} where "server_name"=#{serverName}
+ </update>
+ <update id="serverSubmit" parameterType="entity.Server">
+	update "server" set "server_update_time"=#{serverUpdateTime},"server_state"=#{serverState},"server_controller"=#{serverController} where "server_name"=#{serverName}
+ </update>
+<select id="findByPageServer" resultMap="serverMap">
+   select sp.* from (select "server".*,rownum rn from "server")sp where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+<select id="findCount" resultType="java.lang.Integer">
+   select count(*) from "server"
+</select>
+<!-- 模糊查询分页 -->
+<select id="findPageByCode" parameterType="java.util.Map" resultMap="serverMap">
+  select A.* ,ROWNUM rn from 
+      (select * from "server" where "server_name" like '%'||#{serverName}||'%'
+      )A where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}        
+</select>
+
+<!-- 模糊查询页数 -->
+<select id="selectCount" resultType="java.lang.Integer">
+    select count(*)from "server" 
+</select>
+<!-- 2.服务分配 -->
+<select id="findByPageServer1" resultMap="serverMap" parameterType="java.lang.Integer">
+   select sp.* from (select "server".*,rownum rn from "server" where  "server_state"= 1)sp where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+<select id="findCount1" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   select count(*) from "server" where  "server_state"= 1
+</select>
+<update id="serverAssign" parameterType="entity.Server">
+	update "server" set "server_state"=#{serverState},"server_update_time"=#{serverUpdateTime},"server_handler"=#{serverHandler},"server_controller"=#{serverController} where "server_name"=#{serverName}
+ </update>
+<!--3. 服务处理 -->
+<select id="findByPageServer2" resultMap="serverMap" parameterType="java.lang.Integer">
+   select sp.* from (select "server".*,rownum rn from "server" where  "server_state"= 2)sp where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+<select id="findCount2" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   select count(*) from "server" where  "server_state"= 2
+</select>
+<update id="serverHandle" parameterType="entity.Server">
+	update "server" set "server_state"=#{serverState},"server_handle_context"=#{serverHandleContext},"server_controller"=#{serverController},"server_update_time"=#{serverUpdateTime} where "server_name"=#{serverName}
+ </update>
+<!--4. 服务反馈-->
+<select id="findByPageServer3" resultMap="serverMap" parameterType="java.lang.Integer">
+   select sp.* from (select "server".*,rownum rn from "server" where  "server_state"= 3)sp where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+<select id="findCount3" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   select count(*) from "server" where  "server_state"= 3
+</select>
+
+<update id="serverFeedBack" parameterType="entity.Server">
+	update "server" set "server_state"=#{serverState},"server_back_context"=#{serverBackContext},"server_controller"=#{serverController},"server_update_time"=#{serverUpdateTime} where "server_name"=#{serverName}
+ </update>
+ 
+<!--5. 服务归档 -->
+<select id="findByPageServer4" resultMap="serverMap" parameterType="java.lang.Integer">
+   select sp.* from (select "server".*,rownum rn from "server" where  "server_state"= 4 or "server_state"= 5)sp where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+<select id="findCount4" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   select count(*) from "server" where  "server_state"= 4 or "server_state"= 5
+</select>
+<update id="serverFile" parameterType="entity.Server">
+	update "server" set "server_type"=#{serverType},"server_client_name"=#{serverClientName},"server_client_tel"=#{serverClientTel},"server_context"=#{serverContext},"server_remark"=#{serverRemark},"server_update_time"=#{serverUpdateTime},"server_state"=#{serverState} where "server_name"=#{serverName}
+ </update>
+</mapper>
+
+

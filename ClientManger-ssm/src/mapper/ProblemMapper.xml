@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.ProblemMapper">
+<resultMap type="entity.Problem" id="problemMap">
+ <result property="problemTitle" column="problem_title" javaType="java.lang.String"/>
+ <result property="problemType" column="problem_type" javaType="java.lang.String"/>
+  <result property="problemReply" column="problem_reply" javaType="java.lang.String"/>
+ <result property="problemRemark" column="problem_remark" javaType="java.lang.String"/>
+ <result property="problemCreater" column="problem_creater" javaType="java.lang.String"/>
+ <result property="problemCreateTime" column="problem_create_time" javaType="java.sql.Date"/>
+ <result property="problemController" column="problem_controller" javaType="java.lang.String"/>
+ <result property="problemUpdateTime" column="problem_update_time" javaType="java.sql.Date"/>
+ <result property="problemDel" column="problem_del" javaType="java.math.BigDecimal"/>
+
+</resultMap>
+<select id="findAllProblem" resultMap="problemMap">
+   select * from "problem"
+</select>
+<select id="findByPageProblem" resultMap="problemMap">
+   select pr.* from (select "problem".*,rownum rn from "problem")pr where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+</select>
+<select id="findCount" resultType="java.lang.Integer">
+   select count(*) from "problem"
+</select>
+<insert id="saveProblem" parameterType="entity.Problem" >
+   insert into "problem" ("problem_title","problem_type","problem_reply","problem_remark","problem_creater","problem_create_time")values(#{problemTitle},#{problemType},#{problemReply},#{problemRemark},#{problemCreater},#{problemCreateTime})
+</insert>
+<select id="findByTitleProblem" resultMap="problemMap" parameterType="String">
+	select * from "problem" where "problem_title" = #{problemTitle}
+ </select>
+ <delete id="deleteProblem" parameterType="String">
+   delete from "problem" where "problem_title" =#{problemTitle}
+ </delete>
+ <update id="updateProblem" parameterType="entity.Problem">
+	update "problem" set "problem_type"=#{problemType},"problem_reply"=#{problemReply},"problem_remark"=#{problemRemark},"problem_update_time"=#{problemUpdateTime},"problem_controller"=#{problemController} where "problem_title"=#{problemTitle}
+ </update>
+</mapper>
+
+

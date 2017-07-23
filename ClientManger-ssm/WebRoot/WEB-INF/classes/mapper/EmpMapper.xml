@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.EmpMapper">
+<resultMap type="entity.Emp" id="empMap">
+ <result property="empId" column="emp_id" javaType="java.lang.String"/>
+ <result property="empName" column="emp_name" javaType="java.lang.String"/>
+  <result property="empSex" column="emp_sex" javaType="java.lang.String"/>
+ <result property="empPhone" column="emp_phone" javaType="java.lang.String"/>
+ <result property="empState" column="emp_state" javaType="java.lang.Long"/>
+ <result property="empLoginName" column="emp_login_name" javaType="java.lang.String"/>
+ <result property="empPassword" column="emp_password" javaType="java.lang.String"/>
+ <result property="empDept" column="emp_dept" javaType="java.lang.String"/>
+ <result property="empRole" column="emp_role" javaType="java.lang.String"/>
+ <result property="empUpdateTime" column="emp_update_time" javaType="java.sql.Date"/>
+ <result property="empController" column="emp_controller" javaType="java.lang.String"/>
+ <result property="empDel" column="emp_del" javaType="java.math.BigDecimal"/>
+ <result property="empRemark" column="emp_remark" javaType="java.lang.String"/>
+ <result property="empUpdatePass" column="emp_update_pass" javaType="java.lang.Byte"/>
+</resultMap>
+<select id="findAllEmp" resultMap="empMap">
+   select * from "emp"
+</select>
+<select id="findLogin" resultMap="empMap" parameterType="entity.Emp">
+   select * from "emp" where "emp_login_name"=#{empLoginName} and "emp_password"=#{empPassword}
+</select>
+<select id="findByRoleEmp" resultMap="empMap" parameterType="java.lang.String">
+   select * from "emp" where "emp_role"=#{empRole}
+</select>
+<select id="findEmpRole" resultMap="empMap">
+	select * from "emp" where "emp_role"='销售代表'
+</select>
+
+
+<!--lei-->
+<select id="findEmp" resultMap="empMap" parameterType="String">
+   select * from "emp" where "emp_id"=#{empId}
+</select>
+
+
+<select id="findEmp2" resultMap="empMap" parameterType="entity.Emp">
+   select *  FROM "emp" e  WHERE e."emp_role"=#{empRole} 
+</select>
+
+	
+ <insert id="save" parameterType="entity.Emp" >
+ 	INSERT INTO   "emp"   VALUES(#{empId},#{empName},#{empSex},#{empPhone},#{empState},#{empName},'666666',#{empDept},#{empRole},#{empUpdateTime},#{empController},#{empDel},#{empRemark},#{empUpdatePass})
+ </insert>
+	
+	<delete id="delete" parameterType="String">
+	DELETE FROM "emp" WHERE "emp_id"=#{empId}
+	</delete>
+	
+	<update id="update" parameterType="entity.Emp">
+		update "emp" set "emp_name"=#{empName},"emp_sex"=#{empSex},"emp_phone"=#{empPhone},"emp_state"=#{empState},"emp_login_name"=#{empLoginName},"emp_password"=#{empPassword},"emp_dept"=#{empDept},"emp_role"=#{empRole},"emp_update_time"=#{empUpdateTime},"emp_controller"=#{empController},"emp_del"=#{empDel},"emp_remark"=#{empRemark},"emp_update_pass"=#{empUpdatePass} where "emp_id"=#{empId}
+	</update>
+
+</mapper>
+
+

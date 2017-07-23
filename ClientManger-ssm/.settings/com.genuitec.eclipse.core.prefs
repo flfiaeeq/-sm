@@ -1,0 +1,4 @@
+#Sat Jun 03 20:48:42 CST 2017
+eclipse.preferences.version=1
+validator.Checked=WebRoot/admin,WebRoot/lib/Validform,WebRoot/lib/layer,WebRoot/js/H-ui.admin.js,WebRoot/lib/respond.min.js,WebRoot/lib/ueditor,WebRoot/lib/handlebars.js,WebRoot/lib/webuploader,WebRoot/lib/datatables/1.10.0/jquery.dataTables.min.js,WebRoot/lib/lazyload/lazyload.js,WebRoot/js/H-ui.js,WebRoot/lib/Highcharts
+validator.Unchecked=

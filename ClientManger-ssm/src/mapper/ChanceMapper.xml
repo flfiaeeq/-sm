@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.ChanceMapper">
+<resultMap type="entity.Chance" id="chanceMap">
+ <result property="chanceId" column="chance_id" javaType="java.lang.String"/>
+ <result property="chanceName" column="chance_name" javaType="java.lang.String"/>
+  <result property="chanceType" column="chance_type" javaType="java.lang.String"/>
+ <result property="chanceContext" column="chance_context" javaType="java.lang.String"/>
+ <result property="chanceRemark" column="chance_remark" javaType="java.lang.String"/>
+ <result property="chanceCreater" column="chance_creater" javaType="java.lang.String"/>
+ <result property="chanceCreateTime" column="chance_create_time" javaType="java.sql.Date"/>
+ <result property="chanceController" column="chance_controller" javaType="java.lang.String"/>
+ <result property="chanceUpdateTime" column="chance_update_time" javaType="java.sql.Date"/>
+ <result property="chanceEmp" column="chance_emp" javaType="java.lang.String"/>
+ <result property="chanceDel" column="chance_del" javaType="java.math.BigDecimal"/>
+</resultMap>
+<select id="findAllChance" resultMap="chanceMap">
+		select a1.* from (select "chance".*,rownum rn from "chance") a1 where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}		
+</select>
+   <select id="findcountChance" resultType="java.lang.Integer">
+    select count(*) from "chance"
+</select>
+   <insert id="insertChance" parameterType="entity.Chance">
+      insert into "chance"("chance_id","chance_name","chance_type"
+      ,"chance_context","chance_remark","chance_creater",
+      "chance_create_time","chance_update_time") 
+      values(#{chanceId},#{chanceName},#{chanceType}
+      ,#{chanceContext},#{chanceRemark},#{chanceCreater}
+      ,#{chanceCreateTime},#{chanceUpdateTime})
+   </insert>
+    <update id="updateChance" parameterType="entity.Chance">
+       update "chance"
+       set "chance_name"=#{chanceName},"chance_type"=#{chanceType}
+      , "chance_context"=#{chanceContext},"chance_remark"=#{chanceRemark}
+      ,"chance_update_time"=#{chanceUpdateTime}
+      where "chance_id"=#{chanceId}
+    </update>
+    <update id="updateChanceControl" parameterType="entity.Chance">
+       update "chance"
+       set "chance_controller"=#{chanceController}
+       ,"chance_update_time"=#{chanceUpdateTime}
+       ,"chance_emp"=#{chanceEmp}
+       where "chance_id"=#{chanceId}
+    </update>
+  <delete id="deleteChance" parameterType="java.lang.String">
+    delete from "chance" where "chance_id"=#{chanceId}
+   
+  </delete>
+  <select id="findByIdChance" resultMap="chanceMap" parameterType="java.lang.String">
+     select * from "chance" where "chance_id"=#{chanceId}
+  </select>
+</mapper>
+
+

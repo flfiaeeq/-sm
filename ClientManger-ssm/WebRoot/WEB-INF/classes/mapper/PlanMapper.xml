@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.PlanMapper">
+<resultMap type="entity.Plan" id="planMap">
+ <result property="planId" column="plan_id" javaType="java.lang.String"/>
+ <result property="planCreater" column="plan_creater" javaType="java.lang.String"/>
+  <result property="planTargetTime" column="plan_target_time" javaType="java.sql.Date"/>
+ <result property="planContext" column="plan_context" javaType="java.lang.String"/>
+ <result property="planState" column="plan_state" javaType="java.math.BigDecimal"/>
+ <result property="planController" column="plan_controller" javaType="java.lang.String"/>
+ <result property="planUpdateTime" column="plan_update_time" javaType="java.sql.Date"/>
+ <result property="planHandler" column="plan_handler" javaType="java.lang.String"/>
+ <result property="planDel" column="plan_del" javaType="java.math.BigDecimal"/>
+</resultMap>
+<select id="findcount" resultType="java.lang.Integer">
+   select count(*) from
+(select a1.* from (select "plan".* from "plan" where "plan_creater"=#{0,jdbcType=VARCHAR} or "plan_handler"=#{0,jdbcType=VARCHAR}
+and "plan_state" between 0 and 3) a1 )
+ b1 where "plan_id" not in
+(select "plan_id" from "plan" where "plan_handler"=#{0,jdbcType=VARCHAR} and "plan_state"=0)
+</select>
+<insert id="insertPlan" parameterType="entity.Plan">
+   insert into "plan"("plan_id","plan_creater","plan_target_time","plan_context","plan_state","plan_handler","plan_controller","plan_update_time") values(#{planId},#{planCreater},#{planTargetTime},#{planContext},#{planState},#{planHandler},#{planController},#{planUpdateTime})
+</insert>
+<delete id="deletePlan" parameterType="java.lang.String">
+   delete from "plan" where "plan_id"=#{planId}
+</delete>
+<select id="findByIdPlan" resultMap="planMap" parameterType="java.lang.String">
+    select * from "plan" where "plan_id"=#{planId}
+</select>
+<update id="updatePlan" parameterType="java.lang.String">
+   update "plan" set "plan_creater"=#{planCreater},"plan_target_time"=#{planTargetTime},"plan_context"=#{planContext},"plan_update_time"=#{planUpdateTime},"plan_state"=#{planState} where "plan_id"=#{planId}
+</update>
+<update id="updatePlanState" parameterType="entity.Plan">
+   update "plan" set "plan_state"=#{planState} where "plan_id"=#{planId}
+</update>
+<select id="findByPageStatePlan" resultMap="planMap">
+    select c1.* from 
+   (select b1.*,rownum rn from
+    (select a1.* from (select "plan".* from "plan" where "plan_creater"=#{0,jdbcType=VARCHAR} or "plan_handler"=#{0,jdbcType=VARCHAR}
+    and "plan_state" between 0 and 3) a1 ) b1 
+    where "plan_id" not in
+    (select "plan_id" from "plan" where "plan_handler"=#{0,jdbcType=VARCHAR} and "plan_state"=0)) c1 where rn between #{1,jdbcType=INTEGER} and #{2,jdbcType=INTEGER} order by "plan_update_time" desc
+</select>
+</mapper>
+
+

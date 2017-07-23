@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="mapper.ClientPlanMapper">
+	<resultMap type="entity.ClientPlan" id="clientPlanMap">
+ 		<result property="planId" column="plan_id" javaType="java.lang.String" />
+ 		<result property="planCreater" column="plan_creater" javaType="java.lang.String" />
+ 		<result property="planTargetTime" column="plan_target_time" javaType="java.sql.Date" />
+ 		<result property="planContext" column="plan_context" javaType="java.lang.String" />
+ 		<result property="planCreateTime" column="plan_create_time" javaType="java.sql.Date" />
+ 		<result property="planController" column="plan_controller" javaType="java.lang.String" />
+ 		<result property="planUpdateTime" column="plan_update_time" javaType="java.sql.Date" />
+ 		<result property="planDel" column="plan_del" javaType="java.lang.Long" />
+	</resultMap>
+	
+<insert id="addClientPlan"  parameterType="entity.ClientPlan">
+	insert into "client_plan" ("plan_id","plan_creater","plan_target_time","plan_context") 
+	values('${planId}','${planCreater}',#{planTargetTime},'${planContext}')
+</insert>
+ <select id="allClientPlan" resultMap="clientPlanMap">
+    select a1.* from (select "client_plan".*,rownum rn from "client_plan")a1 where
+    rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}
+ </select>	
+ <update id="updateClientPlan" parameterType="entity.ClientPlan">
+		update "client_plan" set "plan_id"=#{planId},"plan_creater"=#{planCreater},"plan_target_time"=#{planTargetTime},
+		"plan_context"=#{planContext} where "plan_id"=#{planId}
+		
+</update>
+<select id="findById" resultMap="clientPlanMap" parameterType="int">
+	select * from "client_plan" where "plan_id"=#{planId}
+</select>
+
+<select id="findCount" resultType="java.lang.Integer">
+	select count(*) from "client_plan"
+</select>
+<delete id="deleteClientPlan" parameterType="String">
+	delete from "client_plan" where "plan_id"=#{planId}
+</delete>
+</mapper>

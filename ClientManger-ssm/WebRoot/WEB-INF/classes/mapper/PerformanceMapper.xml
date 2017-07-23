@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.PerformanceMapper">
+<resultMap type="entity.Performance" id="PerformanceMap">
+ <result property="perfId" column="perf_id" javaType="java.lang.String"/>
+ <result property="perfDept" column="perf_dept" javaType="java.lang.String"/>
+  <result property="perfEmp" column="perf_emp" javaType="java.lang.String"/>
+ <result property="perfRank" column="perf_rank" javaType="java.math.BigDecimal"/>
+ <result property="perfRemark" column="perf_remark" javaType="java.lang.String"/>
+ <result property="perfController" column="perf_controller" javaType="java.lang.String"/>
+ <result property="perfUpdateTime" column="perf_update_time" javaType="java.sql.Date"/>
+ <result property="perfDel" column="perf_del" javaType="java.math.BigDecimal"/>
+</resultMap>
+<select id="findAllPerformance" resultMap="PerformanceMap">
+  select a1.* from (select "performance".*,rownum rn from "performance") a1 where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}		
+</select>
+   <select id="findcountPerfor" resultType="java.lang.Integer">
+    select count(*) from "performance"
+</select>
+<select id="findByIdPerformance" resultMap="PerformanceMap" parameterType="java.lang.String">
+    select * from "performance" where "perf_id"=#{perfId}
+</select>
+<insert id="insertPerformance" parameterType="entity.Performance">
+    insert into "performance" 
+    values(#{perfId},#{perfDept},#{perfEmp},#{perfRank}
+    ,#{perfRemark},#{perfController},#{perfUpdateTime}
+    ,#{perfDel})
+ </insert>
+  <delete id="deletePerformance" parameterType="java.lang.String">
+      delete from "performance" where "perf_id"=#{perfId}
+  </delete>
+   <update id="updatePerformance" parameterType="entity.Performance">
+       update "performance" 
+       set "perf_dept"=#{perfDept},"perf_emp"=#{perfEmp},
+       "perf_rank"=#{perfRank},"perf_remark"=#{perfRemark},
+       "perf_update_time"=#{perfUpdateTime}
+        where "perf_id"=#{perfId}
+   </update>
+</mapper>
+
+

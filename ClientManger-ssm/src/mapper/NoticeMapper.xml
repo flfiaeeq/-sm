@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.NoticeMapper">
+<resultMap type="entity.Notice" id="NoticeMap">
+ <result property="noticeId" column="notice_id" javaType="java.lang.String"/>
+ <result property="noticeTitle" column="notice_title" javaType="java.lang.String"/>
+ <result property="noticeType" column="notice_type" javaType="java.lang.String"/>
+ <result property="noticeState" column="notice_state" javaType="java.math.BigDecimal"/>
+ <result property="noticeIssuser" column="notice_issuser" javaType="java.lang.String"/>
+ <result property="noticeContext" column="notice_context" javaType="java.lang.String"/>
+ <result property="noticeIssueTime" column="notice_issue_time" javaType="java.sql.Date"/>
+ <result property="noticeDel" column="notice_del" javaType="java.math.BigDecimal"/>
+ <result property="noticeUpdateTime" column="notice_update_time" javaType="java.sql.Date"/>
+ <result property="noticeAddTime" column="notice_add_time" javaType="java.sql.Date"/>
+ <result property="noticeDept" column="notice_dept" javaType="java.lang.Byte"/>
+ 	
+
+</resultMap>
+<select id="findAllNotice" resultMap="NoticeMap">
+   select * from "notice"
+</select>
+<select id="findAllNoticeType" resultMap="NoticeMap">
+   select DISTINCT ("notice_type") from "notice" 
+</select>
+
+<select id="findById" resultMap="NoticeMap" parameterType="String">
+   select * from "notice" where "notice_id"=#{noticeId}
+</select>
+
+	
+ <insert id="save" parameterType="entity.Notice" >
+ 	INSERT INTO   "notice"   VALUES(#{noticeId},#{noticeTitle},#{noticeType},#{noticeState},#{noticeIssuser},#{noticeContext},#{noticeIssueTime},#{noticeDel},#{noticeUpdateTime},#{noticeAddTime},#{noticeDept})
+<!-- 	INSERT INTO   "notice"   VALUES(#{noticeId},#{noticeTitle},#{noticeType},#{noticeState,jdbcType=java.math.BigDecimal},#{noticeIssuser},#{noticeContext},#{noticeIssueTime,jdbcType=java.sql.Date},#{noticeDel,jdbcType=java.math.BigDecimal},#{noticeUpdateTime,jdbcType=java.sql.Date},#{noticeAddTime,jdbcType=java.sql.Date},#{noticeDept,jdbcType=java.math.BigDecimal})-->
+ </insert>
+	
+	<delete id="delete" parameterType="String">
+	DELETE FROM "notice" WHERE "notice_id"=#{noticeId}
+	</delete>
+	
+	<update id="update" parameterType="entity.Notice">
+		update "notice" set "notice_title"=#{noticeTitle},"notice_type"=#{noticeType},"notice_state"=#{noticeState},"notice_issuser"=#{noticeIssuser},"notice_context"=#{noticeContext},"notice_issue_time"=#{noticeIssueTime},"notice_del"=#{noticeDel} ,"notice_update_time"=#{noticeUpdateTime} ,"notice_add_time"=#{noticeAddTime},"notice_dept"=#{noticeDept} where "notice_id"=#{noticeId}
+	</update>
+	
+	<select id="fenye" resultMap="NoticeMap" >
+		
+	</select>
+
+</mapper>
+
+

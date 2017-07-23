@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper     
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mapper.PredictionMapper">
+	<resultMap type="entity.Prediction" id="predictionMap">
+		<result property="predictionTitle" column="prediction_title" javaType="java.lang.String" />
+		<result property="predictionTargetTime" column="prediction_target_time"
+			javaType="java.sql.Date" />
+		<result property="predictionDept" column="prediction_dept" javaType="java.lang.String" />
+		<result property="predictionDeptScale" column="prediction_dept_scale"
+			javaType="java.math.BigDecimal" />
+		<result property="predictionClientNum" column="prediction_client_num"
+			javaType="java.math.BigDecimal" />
+		<result property="predictionFileUrl" column="prediction_file_url"
+			javaType="java.lang.String" />
+		<result property="predictionFileName" column="prediction_file_name"
+			javaType="java.lang.String" />
+		<result property="predictionCreateTime" column="prediction_create_time"
+			javaType="java.sql.Date" />
+		<result property="predictionCreater" column="prediction_creater"
+			javaType="java.lang.String" />
+		<result property="predictionDel" column="prediction_del"
+			javaType="java.lang.Byte" />
+	</resultMap>
+	<select id="findAllPrediction" resultMap="predictionMap">
+		select a1.* from (select "prediction".*,rownum rn from "prediction") a1 where rn between #{0,jdbcType=INTEGER} and #{1,jdbcType=INTEGER}		
+</select>
+   <select id="findcountPredic" resultType="java.lang.Integer">
+    select count(*) from "prediction"
+</select>
+  <select id="findByTitlePredic" resultMap="predictionMap" parameterType="java.lang.String">
+    select * from "prediction" where "prediction_title"=#{predictionTitle}
+ </select>
+   <insert id="insertPrediction" parameterType="entity.Prediction">
+    insert into "prediction" 
+    values(#{predictionTitle},#{predictionTargetTime},#{predictionDept},#{predictionDeptScale},#{predictionClientNum}
+    ,#{predictionFileUrl},#{predictionFileName},#{predictionCreateTime}
+    ,#{predictionCreater},#{predictionDel})
+   </insert>
+</mapper>
+
+
